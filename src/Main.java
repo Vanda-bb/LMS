@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Main {
@@ -14,16 +15,19 @@ public class Main {
         Scanner input = new Scanner(System.in);
         while (choice != -1) {
             System.out.println("-------Menu-------");
-            System.out.println("1. Login ");
-            System.out.println("2. Create Account");
+            System.out.println("1. Browse Book");
+            System.out.println("2. Login ");
+            System.out.println("3. Create Account");
             System.out.println("-1 to Exit");
             System.out.print("Enter your choice: ");
             choice = input.nextInt();
             switch (choice) {
-                case 1:
-                    logIn(userLists, currentUser);
+                case 1: browseBook(userLists);
                     break;
-                case 2: createAccount(userLists, currentUser);
+                case 2:
+                    logIn(userLists);
+                    break;
+                case 3: createAccount(userLists);
                 break;
                 case -1:
                     System.out.println("Exiting the program....");
@@ -35,9 +39,16 @@ public class Main {
         }
 
     }
+
+    //Browse Book
+    public  static void browseBook(User[] userLists) {
+        System.out.println("pe");
+
+    }
+
     //login
 
-    public static void logIn(User[] userLists, int currentUser) {
+    public static void logIn(User[] userLists) {
         Scanner input = new Scanner(System.in);
         User user = new User();
 
@@ -65,10 +76,14 @@ public class Main {
             for (int i = 0; i <currentUser; i++){
                 if (userLists[i].getUserName().equals(userName))
                     if (userLists[i].getPassword().equals(password)) {
-                        System.out.println("Login Successful " + " " + userLists[i].getUserName());
+                        System.out.println("Login Successful "  + userLists[i].getUserName()+" "+
+                        "as"+ " "+ userLists[i].getRole());
+                        userLists[i].getRole().showMenu();
+
                         found = true;
                         break;
                     }
+
             }
             if (!found){
                 System.out.println("Invalid username or password");
@@ -77,9 +92,10 @@ public class Main {
 
 
     //CreateAccount
-    public  static void createAccount(User[] userLists, int currentUser) {
+    public  static void createAccount(User[] userLists) {
         Scanner input = new Scanner(System.in);
         User user = new User();
+        userLists[currentUser++] = user;
 
         boolean valid = false;
 
@@ -115,7 +131,7 @@ public class Main {
         //Role
         valid =  false;
             while (!valid) {
-                System.out.print("Enter Role (ADMIN\tSTUDENT\tTEACHER\tLIBRARIAN\t : ");
+                System.out.print("Enter Role" + Arrays.toString(Role.values()) + ": ");
                 String roleInput = input.nextLine().trim().toUpperCase();
                 Role role = null;
                 try {
