@@ -1,7 +1,6 @@
-import javax.xml.validation.Validator;
-import java.lang.reflect.Array;
 import java.time.Year;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Book {
     private String isbn13;
@@ -90,7 +89,7 @@ public class Book {
     public Book(String isbn13, String title, String[] author, String publisher, int publicationYear, String language, boolean available, String format, int pageCount, String description, String[] editor, String subject) {
         setIsbn13(isbn13);
         setTitle(title);
-        setAuthor(author);
+        setAuthor(Arrays.toString(author));
         setPublisher(publisher);
         setPublicationYear(publicationYear);
         this.language = "";
@@ -185,6 +184,8 @@ public class Book {
             this.isbn13 = isbn13;
         } else {
             System.out.println("Invalid ISBN 13 number");
+
+
         }
     }
 
@@ -196,9 +197,9 @@ public class Book {
         }
     }
 
-    public void setAuthor(String[] author) {
-        if (author != null && author.length >= 1) {
-            this.author = author;
+    public void setAuthor(String author) {
+        if (author != null && author.length() >= 1) {
+            this.author = new String[]{author};
         } else {
             System.out.println("Author list must have at least one name!");
         }
@@ -261,10 +262,10 @@ public class Book {
         }
     }
 
-    public void setEditor(String[] editor) {
+    public void setEditor(String editor) {
 
-        if(editor != null && editor.length >= 1) {
-            this.editor = editor;
+        if(editor != null && editor.length() >= 1) {
+            this.editor = new String[]{editor};
         }else{
             System.out.println("Editor list must have at least one name!");
         }
