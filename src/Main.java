@@ -137,6 +137,9 @@ public class Main {
 
         for (int i = 0; i < listBook.length; i++) {
             Book book = listBook[i];
+            if(book == null){
+                break;
+            }
             if (book.isAvailable()) {
                 System.out.println(
                         " | Title: " + book.getTitle() +
