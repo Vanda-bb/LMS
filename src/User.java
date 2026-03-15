@@ -112,7 +112,7 @@ public class User {
             System.out.println("Password cannot be empty!!");
             return false;
         } else if (!password.matches(strongRegex)) {
-            System.out.println("Password must be at least 8 characters long, and include an uppercase letter, a digit, and a symbol!!");
+            System.out.println("Invalid Password!");
             return false;
         }else {
             this.password = password;

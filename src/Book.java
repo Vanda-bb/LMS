@@ -1,3 +1,4 @@
+import javax.xml.validation.Validator;
 import java.time.Year;
 
 public class Book {
@@ -13,6 +14,8 @@ public class Book {
     private String description;
     private String[] editor;
     private String subject;
+    private int stock;
+    private static BookItem[] booklists = new BookItem[1000];
 
 
     //Constructors
@@ -30,6 +33,7 @@ public class Book {
         this.description = "";
         this.editor = new String[0];
         this.subject = "";
+        this.stock = 0;
     }
 
     //Non-default constructors
@@ -58,6 +62,7 @@ public class Book {
         this.description = description;
         this.editor = editor;
         this.subject = subject;
+        this.stock = 0;
 
 
     }
@@ -110,6 +115,10 @@ public class Book {
     public String getDescription() {
         return description;
 
+    }
+
+    public int getStock() {
+        return stock;
     }
 
     public String[] getEditor() {
@@ -219,6 +228,9 @@ public class Book {
             System.out.println("Subject cannot be empty!");
         }
     }
+    public void setStock(int stock) {
+        this.stock = stock;
+    }
 
     //Behavioral Methods
     public void markAvailable() {
@@ -236,6 +248,53 @@ public class Book {
     public String getDetails() {
         return "Format: "+ format+", Pages: "+ pageCount + ", Subject: "+ subject+", Primary Editor: "+ getPrimaryEditor();
     }
+    public static  class Validator{
+        public  boolean isValid(String isbn, String title) {
+            return isIsbnValid(isbn) && isTitleValid(title);
+        }
+        private Boolean isIsbnValid(String isbn) {
+            return !isbn.isEmpty();
+        }
+        private boolean isTitleValid(String title) {
+            return !title.isEmpty();
+        }
+        public boolean isIsbnvalid(String isbn13) {
+            if(isbn13.length() == 13) {
+                return true;
+            }else {
+                return false;
+            }
+        }
+        public boolean isTitlevalid(String title) {
+            if(!title.isEmpty()){
+                return true;
+            }else{
+                return false;
+            }
+        }
+        public boolean isValidStock(int stock){
+            if(stock >= 0){
+                return true;
+            }else{
+                return false;
+            }
+        }
+    }
+    public class StockManager{
+        public int getAvailabeCount(){
+            return stock;
+
+        }
+        public boolean canAddMore(int shelfLimit){
+            if(stock < shelfLimit){
+                return true;
+
+            }else{
+                return false;
+            }
+        }
+    }
+
 
 }
 

@@ -4,7 +4,7 @@ import java.util.Scanner;
 public class Main {
     private  static User[] userLists = new User[1000];
     private  static int currentUser;
-    private static BookItem[] booklists = new BookItem[1000];
+    private BookItem[] booklist = new BookItem[1000];
     private static int currentBook = 0;
 
     public static void main(String[] args) {
@@ -45,7 +45,7 @@ public class Main {
     private  static void userManagement() {
         int choice = 0;
         Scanner input = new Scanner(System.in);
-        while (choice != -1) {
+        while (choice !=-1) {
             System.out.println("------User Management-------");
             System.out.println("1. Add Users");
             System.out.println("2. Display Users");
@@ -59,7 +59,7 @@ public class Main {
     private static void bookManagement() {
         int choice = 0;
         Scanner input = new Scanner(System.in);
-        while (choice != -1) {
+        while (choice !=-1) {
             System.out.println("------Book Management-------");
             System.out.println("1. Add Books");
             System.out.println("2. Display Books");
@@ -73,7 +73,7 @@ public class Main {
     private  static void adminMenu(User[] userLists) {
         int choice = 0;
         Scanner input = new Scanner (System.in);
-        while (choice != -1) {
+        while (choice !=-1) {
             System.out.println("-------Admin Menu-------");
             System.out.println("1. User Management");
             System.out.println("2.Book Management");
@@ -86,29 +86,33 @@ public class Main {
             case 2: bookManagement();
             default: System.out.println("Invalid choice");
                 break;
+
         }
+        choice = input.nextInt();
     }
 
     //Student Menu
     private static void studentMenu(User[] userLists) {
         int choice = 0;
         Scanner input = new Scanner (System.in);
-        while(choice != -1) {
+        while(choice !=-1) {
             System.out.println("-------Student Menu-------");
             System.out.println("1. Borrow Book");
             System.out.println("-1 to Exit");
             System.out.print("Enter your choice:");
+            choice = input.nextInt();
         }
     }
     //Teacher Menu
     private static void teacherMenu(User[] userLists) {
         int choice = 0;
         Scanner input = new Scanner (System.in);
-        while (choice != -1) {
+        while (choice !=-1) {
             System.out.println("-------Teacher Menu-------");
             System.out.println("1. Borrow Book");
             System.out.println("-1 to Exit");
             System.out.print("Enter your choice:");
+            choice = input.nextInt();
         }
     }
     //Librarian Menu
@@ -122,17 +126,21 @@ public class Main {
             System.out.println("3. Delete Book ");
             System.out.println("-1 to Exit");
             System.out.print("Enter your choice:");
+            choice = input.nextInt();
         }
     }
 
 
     //Browse Book
     public static void browseBook() {
+        Book.booklists= new BookItem();
+
+
         System.out.println("------ Available Books ------");
         boolean found = false;
 
         for (int i = 0; i < currentBook; i++) {
-            if (booklists[i].getStatus() == Status.AVAILABLE) {
+            if (booklists.getStatus() == Status.AVAILABLE) {
                 System.out.println("ID: " + booklists[i].getBookItemId() +
                         " | Title: " + booklists[i].getTitle() +
                         " | Author: " + booklists[i].getAuthor() +
