@@ -1,5 +1,7 @@
 import javax.xml.validation.Validator;
+import java.lang.reflect.Array;
 import java.time.Year;
+import java.util.ArrayList;
 
 public class Book {
     private String isbn13;
@@ -8,14 +10,61 @@ public class Book {
     private String publisher;
     private int publicationYear;
     private String language;
-    private boolean available = true;
+    private boolean available;
     private String format;
     private int pageCount;
     private String description;
     private String[] editor;
     private String subject;
     private int stock;
-    private static BookItem[] booklists = new BookItem[1000];
+    private ArrayList<BookItem> listBookItem;
+
+    public static  class Validator{
+        public  boolean isValid(String isbn, String title) {
+            return isIsbnValid(isbn) && isTitleValid(title);
+        }
+        private Boolean isIsbnValid(String isbn) {
+            return !isbn.isEmpty();
+        }
+        private boolean isTitleValid(String title) {
+            return !title.isEmpty();
+        }
+        public boolean isIsbnvalid(String isbn13) {
+            if(isbn13.length() == 13) {
+                return true;
+            }else {
+                return false;
+            }
+        }
+        public boolean isTitlevalid(String title) {
+            if(!title.isEmpty()){
+                return true;
+            }else{
+                return false;
+            }
+        }
+        public boolean isValidStock(int stock){
+            if(stock >= 0){
+                return true;
+            }else{
+                return false;
+            }
+        }
+    }
+    public class StockManager{
+        public int getAvailabeCount(){
+            return stock;
+
+        }
+        public boolean canAddMore(int shelfLimit){
+            if(stock < shelfLimit){
+                return true;
+
+            }else{
+                return false;
+            }
+        }
+    }
 
 
     //Constructors
@@ -34,6 +83,7 @@ public class Book {
         this.editor = new String[0];
         this.subject = "";
         this.stock = 0;
+        this.listBookItem = new ArrayList<>();
     }
 
     //Non-default constructors
@@ -248,53 +298,5 @@ public class Book {
     public String getDetails() {
         return "Format: "+ format+", Pages: "+ pageCount + ", Subject: "+ subject+", Primary Editor: "+ getPrimaryEditor();
     }
-    public static  class Validator{
-        public  boolean isValid(String isbn, String title) {
-            return isIsbnValid(isbn) && isTitleValid(title);
-        }
-        private Boolean isIsbnValid(String isbn) {
-            return !isbn.isEmpty();
-        }
-        private boolean isTitleValid(String title) {
-            return !title.isEmpty();
-        }
-        public boolean isIsbnvalid(String isbn13) {
-            if(isbn13.length() == 13) {
-                return true;
-            }else {
-                return false;
-            }
-        }
-        public boolean isTitlevalid(String title) {
-            if(!title.isEmpty()){
-                return true;
-            }else{
-                return false;
-            }
-        }
-        public boolean isValidStock(int stock){
-            if(stock >= 0){
-                return true;
-            }else{
-                return false;
-            }
-        }
-    }
-    public class StockManager{
-        public int getAvailabeCount(){
-            return stock;
-
-        }
-        public boolean canAddMore(int shelfLimit){
-            if(stock < shelfLimit){
-                return true;
-
-            }else{
-                return false;
-            }
-        }
-    }
-
-
 }
 
