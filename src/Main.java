@@ -24,7 +24,7 @@ public class Main {
             System.out.print("Enter your choice: ");
             choice = input.nextInt();
             switch (choice) {
-                case 1: browseBook(userLists);
+                case 1: browseBook();
                     break;
                 case 2:
                     logIn(userLists);
@@ -132,12 +132,12 @@ public class Main {
         boolean found = false;
 
         for (int i = 0; i < currentBook; i++) {
-            if (bookLists[i].getStatus() == Status.AVAILABLE) {
-                System.out.println("ID: " + bookLists[i].getBookItemId() +
-                        " | Title: " + bookLists[i].getTitle() +
-                        " | Author: " + bookLists[i].getAuthor() +
-                        " | Subject: " + bookLists[i].getSubject() +
-                        " | Shelf: " + bookLists[i].getLocationShelf());
+            if (booklists[i].getStatus() == Status.AVAILABLE) {
+                System.out.println("ID: " + booklists[i].getBookItemId() +
+                        " | Title: " + booklists[i].getTitle() +
+                        " | Author: " + booklists[i].getAuthor() +
+                        " | Subject: " + booklists[i].getSubject() +
+                        " | Shelf: " + booklists[i].getLocationShelf());
                 found = true;
             }
         }

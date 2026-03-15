@@ -116,6 +116,3 @@ public class BookItem extends Book {
         System.out.println("Book status updated to: " + newStatus);
     }
 }
-
-void main() {
-}
