@@ -52,6 +52,7 @@ public class Main {
             System.out.println("4. Delete Users");
             System.out.println("-1 to Exit");
             System.out.print("Enter your choice:");
+            choice = input.nextInt();
         }
     }
     //Book Management
@@ -66,6 +67,7 @@ public class Main {
             System.out.println("4. Delete Books");
             System.out.println("-1 to Exit");
             System.out.print("Enter your choice:");
+            choice = input.nextInt();
         }
     }
     //Admin menu
@@ -78,16 +80,15 @@ public class Main {
             System.out.println("2.Book Management");
             System.out.println("-1 to Exit");
             System.out.print("Enter your choice:");
+            choice = input.nextInt();
+            switch (choice) {
+                case 1: userManagement();
+                    break;
+                case 2: bookManagement();
+                default: System.out.println("Invalid choice");
+                    break;
+            }
         }
-        switch (choice) {
-            case 1: userManagement();
-                break;
-            case 2: bookManagement();
-            default: System.out.println("Invalid choice");
-                break;
-
-        }
-        choice = input.nextInt();
     }
 
     //Student Menu
