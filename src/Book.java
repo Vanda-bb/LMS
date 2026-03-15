@@ -172,6 +172,12 @@ public class Book {
 
     public void setAvailable(boolean available) {
         this.available = available;
+
+        if(this.available) {
+            System.out.println("Book is available!");
+        } else {
+            System.out.println("Book is not available!");
+        }
     }
 
     public void setFormat(String format) {
@@ -179,19 +185,39 @@ public class Book {
     }
 
     public void setPageCount(int pageCount) {
-        this.pageCount = pageCount;
+
+        if(pageCount > 0) {
+            this.pageCount = pageCount;
+        }else{
+            System.out.println("Page count must be greater than zero!");
+        }
     }
 
     public void setDescription(String description) {
-        this.description = description;
+
+        if(description != null && !description.isEmpty()) {
+            this.description = description;
+        }else{
+            System.out.println("Description cannot be empty!");
+        }
     }
 
     public void setEditor(String[] editor) {
-        this.editor = editor;
+
+        if(editor != null && editor.length >= 1) {
+            this.editor = editor;
+        }else{
+            System.out.println("Editor list must have at least one name!");
+        }
     }
 
     public void setSubject(String subject) {
-        this.subject = subject;
+
+        if(subject != null && !subject.isEmpty()) {
+            this.subject = subject;
+        }else{
+            System.out.println("Subject cannot be empty!");
+        }
     }
 
     //Behavioral Methods
@@ -207,9 +233,9 @@ public class Book {
         return editor[0];
     }
 
-//    public String getDetails() {
-//        return setFormat();
-//    }
+    public String getDetails() {
+        return "Format: "+ format+", Pages: "+ pageCount + ", Subject: "+ subject+", Primary Editor: "+ getPrimaryEditor();
+    }
 
 }
 

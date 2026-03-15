@@ -1,6 +1,6 @@
 import java.util.Date;
 
-public class BookItem {
+public class BookItem extends Book {
     private int bookItemId;
     private String isbn13;
     private String barcode;
@@ -62,12 +62,7 @@ public class BookItem {
     }
 
     public void setReferenceOnly(boolean isReferenceOnly) {
-        if (isReferenceOnly == true) {
-            System.out.println("The book cannot be checkout");
-            this.isReferenceOnly = false;
-        } else {
-            this.isReferenceOnly = true;
-        }
+        isReferenceOnly = isReferenceOnly;
 
     }
 
@@ -92,24 +87,35 @@ public class BookItem {
     }
 
     //Behavioral Methods
-    public void checkout(String userID) {
+    public void checkout(int userID) {
+        this.bookItemId = userID;
         this.status = Status.LOANED;
-        this.dueDate = new Date();
+        this.borrowedDate = new Date();
 
     }
 
     public void returnItem() {
         this.status = Status.AVAILABLE;
         this.dueDate = null;
+        System.out.println("Book returned and is now available");
     }
 
     public void renew() {
-        this.dueDate = null;
+        if(this.status == Status.LOANED && this.dueDate != null) {
+            System.out.println("Book renewed. New due date: " + dueDate);
+        }else{
+            System.out.println("Book cannot be renewed");
+        }
 
 
     }
 
-    public void updateStatus(String newStatus) {
-        this.status = Status.valueOf(newStatus);
+    public void updateStatus(Status newStatus) {
+
+        this.status = newStatus;
+        System.out.println("Book status updated to: " + newStatus);
     }
+}
+
+void main() {
 }

@@ -12,7 +12,7 @@ public class User {
     private int currentBorrow = 0;
 
     //Method
-      //Default Constructors with default values
+    //Default Constructors with default values
     public User(){
         this.userId = "";
         this.firstName = "";
@@ -24,7 +24,7 @@ public class User {
         this.active = true;
         this.maxBorrowLimit = 3;
     }
-      //Non-default constructors
+    //Non-default constructors
     public User(String userId, String firstName, String lastName, String userName, String email, String password, Role role,boolean active, int maxBorrowLimit){
         setUserId(userId);
         setFirstName(firstName);
