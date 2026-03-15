@@ -3,9 +3,8 @@ import java.util.Scanner;
 
 public class Main {
     private  static User[] userLists = new User[1000];
+    private  static Book[] listBook = new Book[1000];
     private  static int currentUser;
-    private BookItem[] booklist = new BookItem[1000];
-    private static int currentBook = 0;
 
     public static void main(String[] args) {
         CreateMenu();
@@ -133,19 +132,16 @@ public class Main {
 
     //Browse Book
     public static void browseBook() {
-        Book.booklists= new BookItem();
-
-
         System.out.println("------ Available Books ------");
         boolean found = false;
 
-        for (int i = 0; i < currentBook; i++) {
-            if (booklists.getStatus() == Status.AVAILABLE) {
-                System.out.println("ID: " + booklists[i].getBookItemId() +
-                        " | Title: " + booklists[i].getTitle() +
-                        " | Author: " + booklists[i].getAuthor() +
-                        " | Subject: " + booklists[i].getSubject() +
-                        " | Shelf: " + booklists[i].getLocationShelf());
+        for (int i = 0; i < listBook.length; i++) {
+            Book book = listBook[i];
+            if (book.isAvailable()) {
+                System.out.println(
+                        " | Title: " + book.getTitle() +
+                        " | Author: " + Arrays.toString(book.getAuthor()) +
+                        " | Subject: " + book.getSubject());
                 found = true;
             }
         }
