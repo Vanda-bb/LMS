@@ -1,9 +1,10 @@
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
 public class Main {
-    private  static User[] userLists = new User[1000];
-    private  static Book[] listBook = new Book[1000];
+    private  static ArrayList<User> userLists = new ArrayList<>();
+    private  static ArrayList<Book> listBook = new ArrayList<>();
     private  static int currentUser;
 
     public static void main(String[] args) {
@@ -53,7 +54,109 @@ public class Main {
             System.out.println("-1 to Exit");
             System.out.print("Enter your choice:");
             choice = input.nextInt();
+            switch (choice) {
+                case 1:
+                    createAccount(userLists);;
+                    break;
+                case 2:
+                    displayUsers();
+                    break;
+                case 3:
+                    updateUser();
+                    break;
+                case 4:
+                    deleteUser();
+                    break;
+                default:
+                    System.out.println("Invalid choice");
+            }
         }
+    }
+
+    private static void deleteUser(){
+        System.out.print("Enter user ID :");
+        Scanner input = new Scanner(System.in);
+        User user = null;
+        String userId = input.nextLine();
+        for (User eachUser : userLists) {
+            if (eachUser.getUserId().equals(userId)) {
+                user = eachUser;
+                break;
+            }
+        }
+        userLists.remove(user);
+        System.out.println("Delete User Successful");
+    }
+
+    private static void displayUsers(){
+        for (User user : userLists) {
+            System.out.println(
+                    " | User ID: " + user.getUserId() +
+                            " | Username: " + user.getUserName() +
+                            " | Role: " + user.getRole());
+        }
+    }
+
+    private static void updateUser(){
+        System.out.print("Enter user ID :");
+        Scanner input = new Scanner(System.in);
+        User user = null;
+        String userId = input.nextLine();
+        for (User eachUser : userLists) {
+            if (eachUser.getUserId().equals(userId)) {
+                user = eachUser;
+                break;
+            }
+        }
+        boolean valid = false;
+
+        //FirstName
+        while (!valid) {
+            System.out.print("Enter FirstName: ");
+            valid = user.setFirstName(input.nextLine());
+        }
+        //LastName
+        valid = false;
+        while (!valid) {
+            System.out.print("Enter LastName: ");
+            valid = user.setLastName(input.nextLine());
+        }
+        //UserName
+        valid =  false;
+        while (!valid) {
+            System.out.print("Enter UserName: ");
+            valid = user.setUserName(input.nextLine());
+        }
+        //Email
+        valid =  false;
+        while (!valid) {
+            System.out.print("Enter Email: ");
+            valid = user.setEmail(input.nextLine());
+        }
+        //Password
+        valid =  false;
+        while (!valid) {
+            System.out.print("Enter Password: ");
+            valid = user.setPassword(input.nextLine());
+        }
+        //Role
+        valid =  false;
+        while (!valid) {
+            System.out.print("Enter Role" + Arrays.toString(Role.values()) + ": ");
+            String roleInput = input.nextLine().trim().toUpperCase();
+            Role role = null;
+            try {
+                role = Role.valueOf(roleInput);
+                valid = true;
+            } catch (IllegalArgumentException e) {
+                System.out.println("Invalid Role");
+            }
+            user.setRole(role);
+
+        }
+
+        userLists.add(user);
+        System.out.println("Update User Successful" + " " +user.getUserName());
     }
     //Book Management
     private static void bookManagement() {
@@ -68,10 +171,69 @@ public class Main {
             System.out.println("-1 to Exit");
             System.out.print("Enter your choice:");
             choice = input.nextInt();
+            switch (choice) {
+                case 1:
+                    addBook();;
+                    break;
+                case 2:
+                    displayBook();
+                    break;
+                case 3:
+                    updateBook();
+                    break;
+                case 4:
+                    deleteBook();
+                    break;
+                default:
+                    System.out.println("Invalid choice");
+            }
         }
     }
+    private static void addBook(){
+        Scanner input = new Scanner (System.in);
+        System.out.print("Book Name:");
+        String bookName = input.next();
+        Book book = new Book();
+        listBook.add(book);
+        System.out.println("Book Added Successfuuly");
+    }
+    private static void updateBook(){
+        System.out.print("Enter Book Title :");
+        Scanner input = new Scanner(System.in);
+        Book book = null;
+        String bookTitle = input.nextLine();
+        for (Book eachBook : listBook) {
+            if (eachBook.getTitle().equals(bookTitle)) {
+                book = eachBook;
+                break;
+            }
+        }
+        book.setTitle(bookTitle);
+        listBook.add(book);
+        System.out.println("Book Update Successfuuly");
+    }
+    private static void displayBook(){
+        for (Book book : listBook) {
+            System.out.println(
+                    " | Book Title: " + book.getTitle());
+        }
+    }
+    private static void deleteBook(){
+        System.out.print("Enter user ID :");
+        Scanner input = new Scanner(System.in);
+        Book book = null;
+        String bookTitle = input.nextLine();
+        for (Book eachBook : listBook) {
+            if (eachBook.getTitle().equals(bookTitle)) {
+                book = eachBook;
+                break;
+            }
+        }
+        listBook.remove(book);
+        System.out.println("Delete User Successful");
+    }
     //Admin menu
-    private  static void adminMenu(User[] userLists) {
+    private  static void adminMenu(ArrayList<User> userLists) {
         int choice = 0;
         Scanner input = new Scanner (System.in);
         while (choice !=-1) {
@@ -92,7 +254,7 @@ public class Main {
     }
 
     //Student Menu
-    private static void studentMenu(User[] userLists) {
+    private static void studentMenu(ArrayList<User> userLists) {
         int choice = 0;
         Scanner input = new Scanner (System.in);
         while(choice !=-1) {
@@ -104,7 +266,7 @@ public class Main {
         }
     }
     //Teacher Menu
-    private static void teacherMenu(User[] userLists) {
+    private static void teacherMenu(ArrayList<User> userLists) {
         int choice = 0;
         Scanner input = new Scanner (System.in);
         while (choice !=-1) {
@@ -116,7 +278,7 @@ public class Main {
         }
     }
     //Librarian Menu
-    private static void librarianMenu(User[] userLists) {
+    private static void librarianMenu(ArrayList<User> userLists) {
         int choice = 0;
         Scanner input = new Scanner (System.in);
         while (choice != -1) {
@@ -130,14 +292,13 @@ public class Main {
         }
     }
 
-
     //Browse Book
     public static void browseBook() {
         System.out.println("------ Available Books ------");
         boolean found = false;
 
-        for (int i = 0; i < listBook.length; i++) {
-            Book book = listBook[i];
+        for (int i = 0; i < listBook.size(); i++) {
+            Book book = listBook.get(i);
             if(book == null){
                 break;
             }
@@ -165,7 +326,7 @@ public class Main {
     }
     //login
 
-    public static void logIn(User[] userLists) {
+    public static void logIn(ArrayList<User> userLists) {
         Scanner input = new Scanner(System.in);
         User user = new User();
 
@@ -191,11 +352,11 @@ public class Main {
 
         boolean found = false;
         for (int i = 0; i <currentUser; i++){
-            if (userLists[i].getUserName().equals(userName))
-                if (userLists[i].getPassword().equals(password)) {
-                    System.out.println("Login Successful "  + userLists[i].getUserName() +" "+
-                            "as"+ " " + userLists[i].getRole().name());
-                    showSubMenu(userLists[i].getRole());
+            if (userLists.get(i).getUserName().equals(userName))
+                if (userLists.get(i).getPassword().equals(password)) {
+                    System.out.println("Login Successful "  + userLists.get(i).getUserName() +" "+
+                            "as"+ " " + userLists.get(i).getRole().name());
+                    showSubMenu(userLists.get(i).getRole());
                     found = true;
                     break;
                 }
@@ -220,10 +381,10 @@ public class Main {
         }
     }
     //CreateAccount
-    public  static void createAccount(User[] userLists) {
+    public  static void createAccount(ArrayList<User> userLists) {
         Scanner input = new Scanner(System.in);
         User user = new User();
-        userLists[currentUser++] = user;
+        userLists.add(user);
 
         boolean valid = false;
 
@@ -272,7 +433,7 @@ public class Main {
 
         }
 
-        userLists[currentUser++] = user;
+        userLists.add(user);
         System.out.println("Create Account Successful" + " " +user.getUserName());
 
     }
