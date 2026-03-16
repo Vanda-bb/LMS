@@ -94,21 +94,6 @@ public class Main {
         }
         if (!found){
             System.out.println("Invalid username or password");
-            return;
-        }
-        int roleChoice = input.nextInt();
-        input.nextLine(); // consume newline
-
-        Role role;
-        switch (roleChoice) {
-            case 1 -> role = Role.ADMIN;
-            case 2 -> role = Role.STUDENT;
-            case 3 -> role = Role.TEACHER;
-            case 4 -> role = Role.LIBRARIAN;
-            default -> {
-                System.out.println("Invalid role! Defaulting to STUDENT.");
-                role = Role.STUDENT;
-            }
         }
     }
     //CreateAccount
@@ -166,7 +151,7 @@ public class Main {
         user.setUserId("A00"+ (userLists.size() +1));
 
         userLists.add(user);
-        System.out.println("Create Account Successful" + " " +user.getUserName()+ " " +user.getUserId());
+        System.out.println("Create Account Successfully" + " " +user.getUserName()+ " " +user.getUserId());
 
     }
     //Admin menu
@@ -183,6 +168,7 @@ public class Main {
             choice = input.nextInt();
             switch (choice) {
                 case 1: userManagement();
+                    choice = -1;
                     break;
                 case 2: bookManagement();
                     break;
@@ -212,10 +198,10 @@ public class Main {
                     break;
                 case 2: CreateMenu();
                     break;
-                case -1:
-                    System.out.println("Exiting Program....");
+                case -1: System.out.println("Exiting Program....");
                     break;
-                    default: System.out.println("Invalid choice");
+                default:
+                    System.out.println("Invalid choice");
                     break;
             }
         }
@@ -234,7 +220,7 @@ public class Main {
             switch (choice) {
                 case 1: browseBook();
                     break;
-                case 3: CreateMenu();
+                case 2: CreateMenu();
                     break;
                 case -1:
                     System.out.println("Exiting Program....");
@@ -250,18 +236,15 @@ public class Main {
         Scanner input = new Scanner (System.in);
         while (choice !=-1) {
             System.out.println("-------Librarian Menu-------");
-            System.out.println("1. User Management");
-            System.out.println("2. Book Management");
-            System.out.println("3. LMS Menu");
+            System.out.println("1. Book Management");
+            System.out.println("2. LMS Menu");
             System.out.println("-1 to Exit");
             System.out.print("Enter your choice:");
             choice = input.nextInt();
             switch (choice) {
-                case 1: userManagement();
+                case 1: bookManagement();
                     break;
-                case 2: bookManagement();
-                    break;
-                case 3: CreateMenu();
+                case 2: CreateMenu();
                     break;
                 case -1:
                     System.out.println("Exiting Program....");
@@ -298,6 +281,7 @@ public class Main {
                     break;
                 case 4:
                     deleteUser();
+                    choice = -1;
                     break;
                 case 5: CreateMenu();
                     break;
@@ -313,6 +297,9 @@ public class Main {
     }
     //Display User
     private static void displayUsers(){
+        if (userLists.isEmpty()) {
+            System.out.println("No User found!");
+        }
         for (User user : userLists) {
             System.out.println(
                     " | User ID: " + user.getUserId() +
@@ -322,18 +309,25 @@ public class Main {
     }
     //Update User
     private static void updateUser(){
-        System.out.print("Enter user ID :");
         Scanner input = new Scanner(System.in);
+        boolean isValid = false;
         User user = null;
-        String userId = input.nextLine();
-        for (User eachUser : userLists) {
-            if (eachUser.getUserId().equals(userId)) {
-                user = eachUser;
-                break;
+
+        while(!isValid){
+            System.out.print("Enter User ID to update: ");
+            String userId = input.nextLine();
+            for (User eachUser : userLists) {
+                if (eachUser.getUserId().equalsIgnoreCase(userId)) {
+                    user = eachUser;
+                    isValid = true;
+                    break;
+                }else{
+                    System.out.println("Book not found!");
+                }
             }
         }
-        boolean valid = false;
 
+        boolean valid = false;
         //FirstName
         while (!valid) {
             System.out.print("Enter FirstName: ");
@@ -379,24 +373,30 @@ public class Main {
 
         }
 
-        userLists.add(user);
-        System.out.println("Update User Successful" + " " +user.getUserName());
+        System.out.println("Update User Successfully" + " " +user.getUserName());
     }
 
     //Delete User
     private static void deleteUser(){
-        System.out.print("Enter user ID :");
         Scanner input = new Scanner(System.in);
         User user = null;
-        String userId = input.nextLine();
-        for (User eachUser : userLists) {
-            if (eachUser.getUserId().equals(userId)) {
-                user = eachUser;
-                break;
+        boolean isValid = false;
+
+        while(!isValid){
+            System.out.print("Enter User ID to delete: ");
+            String userId = input.nextLine();
+            for (User eachUser : userLists) {
+                if (eachUser.getUserId().equalsIgnoreCase(userId)) {
+                    user = eachUser;
+                    isValid = true;
+                    break;
+                }else{
+                    System.out.println("User not found!");
+                }
             }
         }
         userLists.remove(user);
-        System.out.println("Delete User Successful");
+        System.out.println("Delete User Successfully");
     }
 
     //Book Management
@@ -416,7 +416,7 @@ public class Main {
             choice = input.nextInt();
             switch (choice) {
                 case 1:
-                    addBook();;
+                    addBook();
                     break;
                 case 2:
                     displayBook();
@@ -431,6 +431,8 @@ public class Main {
                     break;
                 case 6: userManagement();
                     break;
+                case -1:
+                    break;
                 default:
                     System.out.println("Invalid choice");
             }
@@ -441,71 +443,110 @@ public class Main {
     private static void addBook(){
         Scanner input = new Scanner (System.in);
         Book book = new Book();
+        boolean valid = false;
+        while (!valid) {
+            //BookID
+            System.out.print("Book ISBN-13:");
+            valid = book.setIsbn13(input.nextLine());
+        }
 
-        //BookID
-        System.out.print("Book ISBN-13:");
-        book.setIsbn13(input.nextLine());
+        valid = false;
+        while (!valid) {
+            //Title
+            System.out.print("Book Title:");
+            valid = book.setTitle(input.nextLine());
+        }
 
-        //Title
-        System.out.print("Book Title:");
-        book.setTitle(input.nextLine());
+        valid = false;
+        while (!valid) {
+            //Author
+            System.out.print("Author: ");
+            valid = book.setAuthor(Arrays.toString(new String[]{input.nextLine()}));
+        }
 
-        //Author
-        System.out.print("Author: ");
-        book.setAuthor(Arrays.toString(new String[]{input.nextLine()}));
+        valid = false;
+        while (!valid) {
+            //Publication Year
+            System.out.print("Year Publication: ");
+            valid = book.setPublicationYear(input.nextLine());
+        }
 
-        //Publication Year
-        System.out.print("Year Publication: ");
-        book.setPublicationYear(input.nextInt());
-        input.nextLine();
+        valid = false;
+        while (!valid) {
+            //language
+            System.out.print("language: ");
+            valid = book.setLanguage(input.nextLine());
+        }
 
-        //language
-        System.out.print("language: ");
-        book.setLanguage(input.nextLine());
+        valid = false;
+        while (!valid) {
+            //available
+            System.out.print("Available (YES/NO): ");
+            String availableInput = input.nextLine().trim();
+            valid = book.validateAvailable(availableInput);
+        }
 
-        //available
-        System.out.print("Available (YES/NO): ");
-        String availableInput = input.nextLine().trim();
-        book.setAvailable(availableInput.equalsIgnoreCase("YES"));
+        valid = false;
+        while (!valid) {
+            //format
+            System.out.print("Format:");
+            valid = book.setFormat(input.nextLine());
+        }
 
-        //format
-        System.out.print("Format:");
-        book.setFormat(input.nextLine());
+        valid = false;
+        while (!valid) {
+            //Page Count
+            System.out.print("Page Count: ");
+            valid = book.setPageCount(input.nextLine());
+        }
 
-        //Page Count
-        System.out.print("Page Count: ");
-        book.setPageCount(input.nextInt());
-        input.nextLine();
+        valid = false;
+        while (!valid) {
+            //Description
+            System.out.print("Description: ");
+            valid = book.setDescription(input.nextLine());
+        }
 
-        //Description
-        System.out.print("Description:");
-        book.setDescription(input.nextLine());
+        valid = false;
+        while (!valid) {
+            //Editor
+            System.out.print("Editor: ");
+            String editor = input.nextLine();
+            valid = book.setEditor(editor);
+        }
 
-        //Editor
-        System.out.print("Editor: ");
-       book.setEditor(Arrays.toString(new String[]{input.nextLine()}));
+        valid = false;
+        while (!valid) {
+            //Subject
+            System.out.print("Subject: ");
+            String subject = input.nextLine();
+            valid = book.setSubject(subject);
+        }
 
-        //Subject
-        System.out.print("Subject: ");
-        book.setSubject(input.nextLine());
-
-
+        book.setBookId(listBook.size() + 1);
         listBook.add(book);
-        System.out.println("Book Added Successful");
+        System.out.println("Book Added Successfully");
     }
 
     //Update Book
     private static void updateBook() {
         Scanner input = new Scanner(System.in);
-
-        System.out.print("Enter Book ID to update: ");
-        String bookId = input.nextLine();
-
+        boolean isValid = false;
         Book book = null;
-        for (Book eachBook : listBook) {
-            if (eachBook.getIsbn13().equals(bookId)) {
-                book = eachBook;
-                break;
+
+        while(!isValid){
+            System.out.print("Enter Book ID to update: ");
+            try{
+                int bookId = Integer.parseInt(input.nextLine());
+                for (Book eachBook : listBook) {
+                    if (eachBook.getBookId() == bookId) {
+                        book = eachBook;
+                        break;
+                    }
+                }
+                isValid = true;
+            }catch (NumberFormatException e){
+                System.out.println("Invalid Book ID!");
             }
         }
 
@@ -514,49 +555,85 @@ public class Main {
             return;
         }
 
-        //Title
-        System.out.print("New Title: ");
-        book.setTitle(input.nextLine());
+        boolean valid = false;
+        while (!valid) {
+            //BookID
+            System.out.print("New Book ISBN-13:");
+            valid = book.setIsbn13(input.nextLine());
+        }
 
-        //Author
-        System.out.print("New Author: ");
-        book.setAuthor(input.nextLine());
+        valid = false;
+        while (!valid) {
+            //Title
+            System.out.print("New Book Title:");
+            valid = book.setTitle(input.nextLine());
+        }
 
-        //Publication Year
-        System.out.print("New Publication Year: ");
-        book.setPublicationYear(input.nextInt());
-        input.nextLine();
+        valid = false;
+        while (!valid) {
+            //Author
+            System.out.print("New Author: ");
+            valid = book.setAuthor(Arrays.toString(new String[]{input.nextLine()}));
+        }
 
-        //Language
-        System.out.print("New Language: ");
-        book.setLanguage(input.nextLine());
+        valid = false;
+        while (!valid) {
+            //Publication Year
+            System.out.print("New Year Publication: ");
+            valid = book.setPublicationYear(input.nextLine());
+        }
 
-        //Available
-        System.out.print("Available (YES/NO): ");
-        book.setAvailable(input.nextLine().equalsIgnoreCase("YES"));
+        valid = false;
+        while (!valid) {
+            //language
+            System.out.print("New language: ");
+            valid = book.setLanguage(input.nextLine());
+        }
 
-        //Format
-        System.out.print("New Format: ");
-        book.setFormat(input.nextLine());
+        valid = false;
+        while (!valid) {
+            //available
+            System.out.print("New Available (YES/NO): ");
+            String availableInput = input.nextLine().trim();
+            valid = book.validateAvailable(availableInput);
+        }
 
-        //Page Count
-        System.out.print("New Page Count: ");
-        book.setPageCount(input.nextInt());
-        input.nextLine();
+        valid = false;
+        while (!valid) {
+            //format
+            System.out.print("New Format:");
+            valid = book.setFormat(input.nextLine());
+        }
 
-        //Description
-        System.out.print("New Description: ");
-        book.setDescription(input.nextLine());
+        valid = false;
+        while (!valid) {
+            //Page Count
+            System.out.print("New Page Count: ");
+            valid = book.setPageCount(input.nextLine());
+        }
 
-        //Editor
-        System.out.print("New Editor: ");
-        book.setEditor(input.nextLine());
+        valid = false;
+        while (!valid) {
+            //Description
+            System.out.print("New Description:");
+            valid = book.setDescription(input.nextLine());
+        }
 
-        //Subject
-        System.out.print("New Subject: ");
-        book.setSubject(input.nextLine());
+        valid = false;
+        while (!valid) {
+            //Editor
+            System.out.print("New Editor: ");
+            valid = book.setEditor(input.nextLine());
+        }
 
-        System.out.println("Book Update Successful");
+        valid = false;
+        while (!valid) {
+            //Subject
+            System.out.print("New Subject: ");
+            valid = book.setSubject(input.nextLine());
+        }
+
+        System.out.println("Book Update Successfully");
     }
 
     //Display Book
@@ -583,32 +660,48 @@ public class Main {
     //Delete Book
     private static void deleteBook(){
         Scanner input = new Scanner(System.in);
-        System.out.print("Enter Book isbn13 :");
-        String isbnInput = input.nextLine();
-
+        boolean isValid = false;
         Book book = null;
 
-        for (Book eachBook : listBook) {
-            if (eachBook.getIsbn13().equals(isbnInput)) {
-                book = eachBook;
-                break;
+        while(!isValid){
+            System.out.print("Enter Book ID to delete: ");
+            try{
+                int bookId = Integer.parseInt(input.nextLine());
+                for (Book eachBook : listBook) {
+                    if (eachBook.getBookId() == bookId) {
+                        book = eachBook;
+                        break;
+                    }
+                }
+                isValid = true;
+            }catch (NumberFormatException e){
+                System.out.println("Invalid Book ID!");
             }
         }
-        if(book != null) {
-            listBook.remove(book);
-            System.out.println("Book Delete Successful");
-        }else{
+
+        if (book == null) {
             System.out.println("Book not found!");
+            return;
         }
+
+        listBook.remove(book);
+        System.out.println("Book Delete Successfully");
     }
 
     //Show Submenu
     private static void showSubMenu(Role loggedInUserRole) {
         switch (loggedInUserRole) {
-            case ADMIN -> adminMenu(userLists);
-            case STUDENT -> studentMenu(userLists);
-            case TEACHER -> teacherMenu(userLists);
-            case LIBRARIAN -> librarianMenu(userLists);
+            case ADMIN :
+                    adminMenu(userLists);
+                    break;
+            case STUDENT : studentMenu(userLists);
+                    break;
+            case TEACHER :
+                teacherMenu(userLists);
+                break;
+            case LIBRARIAN :
+                librarianMenu(userLists);
+                break;
         }
     }
 

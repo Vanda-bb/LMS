@@ -1,6 +1,6 @@
 import java.util.Date;
 
-public class BookItem extends Book {
+public class BookItem{
     private int bookItemId;
     private String isbn13;
     private String barcode;
@@ -10,6 +10,29 @@ public class BookItem extends Book {
     private double price;
     private Status status;
     private String locationShelf;
+
+    //Non-default constructors
+    public BookItem(
+            int bookItemId,
+            String isbn13,
+            String barcode,
+            Boolean isReferenceOnly,
+            Date borrowedDate,
+            Date dueDate,
+            double price,
+            Status status,
+            String locationShelf
+    ) {
+        setBookItemId(bookItemId);
+        setIsbn13(isbn13);
+        setBarcode(barcode);
+        setReferenceOnly(isReferenceOnly);
+        setBorrowedDate(borrowedDate);
+        setDueDate(dueDate);
+        setPrice(price);
+        setStatus(status);
+        setLocationShelf(locationShelf);
+    }
 
     //Getter
     public int getBookItemId() {
@@ -63,7 +86,6 @@ public class BookItem extends Book {
 
     public void setReferenceOnly(boolean isReferenceOnly) {
         isReferenceOnly = isReferenceOnly;
-
     }
 
     public void setBorrowedDate(Date borrowedDate) {
