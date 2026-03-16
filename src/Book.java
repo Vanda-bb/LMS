@@ -1,6 +1,13 @@
 import java.time.Year;
 import java.util.ArrayList;
 import java.util.Arrays;
+/**
+ * Represent a book in the library management system.
+ * each book has an ISBN-13 identifier, title, author,publisher,
+ * publicationYear, language, available, format, page count, description,
+ * editors, subject, stock count, and a list of book items
+ *  This CLASS is used to store metadate about a book and manage its details
+ * */
 
 public class Book {
     private int bookId;
@@ -19,6 +26,24 @@ public class Book {
     private int stock;
     private BookItem bookItem;
 
+    private String isbn13; //unique identifier
+    private String title; //title of book
+    private String[] author; //list of author(at least one)
+    private String publisher; //publisher of the book
+    private int publicationYear; // the year the book was published
+    private String language; //the language in that book written
+    private boolean available; //true-> available
+    private String format; //e.g:hard,paper
+    private int pageCount; //total of pages in book
+    private String description; //summary of the book
+    private String[] editor; // list of editor(at least one)
+    private String subject; //category of the book
+    private int stock; //number of copies of this book in stock
+    private ArrayList<BookItem> listBookItem; //the lists of book items (individual copies of the book)
+
+    /**
+     * Class for
+     */
     public static  class Validator{
         public  boolean isValid(String isbn, String title) {
             return isIsbnValid(isbn) && isTitleValid(title);
