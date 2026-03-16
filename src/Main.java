@@ -151,7 +151,7 @@ public class Main {
         user.setUserId("A00"+ (userLists.size() +1));
 
         userLists.add(user);
-        System.out.println("Create Account Successful" + " " +user.getUserName()+ " " +user.getUserId());
+        System.out.println("Create Account Successfully" + " " +user.getUserName()+ " " +user.getUserId());
 
     }
     //Admin menu
@@ -168,6 +168,7 @@ public class Main {
             choice = input.nextInt();
             switch (choice) {
                 case 1: userManagement();
+                    choice = -1;
                     break;
                 case 2: bookManagement();
                     break;
@@ -197,10 +198,10 @@ public class Main {
                     break;
                 case 2: CreateMenu();
                     break;
-                case -1:
-                    System.out.println("Exiting Program....");
+                case -1: System.out.println("Exiting Program....");
                     break;
-                    default: System.out.println("Invalid choice");
+                default:
+                    System.out.println("Invalid choice");
                     break;
             }
         }
@@ -219,7 +220,7 @@ public class Main {
             switch (choice) {
                 case 1: browseBook();
                     break;
-                case 3: CreateMenu();
+                case 2: CreateMenu();
                     break;
                 case -1:
                     System.out.println("Exiting Program....");
@@ -235,18 +236,15 @@ public class Main {
         Scanner input = new Scanner (System.in);
         while (choice !=-1) {
             System.out.println("-------Librarian Menu-------");
-            System.out.println("1. User Management");
-            System.out.println("2. Book Management");
-            System.out.println("3. LMS Menu");
+            System.out.println("1. Book Management");
+            System.out.println("2. LMS Menu");
             System.out.println("-1 to Exit");
             System.out.print("Enter your choice:");
             choice = input.nextInt();
             switch (choice) {
-                case 1: userManagement();
+                case 1: bookManagement();
                     break;
-                case 2: bookManagement();
-                    break;
-                case 3: CreateMenu();
+                case 2: CreateMenu();
                     break;
                 case -1:
                     System.out.println("Exiting Program....");
@@ -283,6 +281,7 @@ public class Main {
                     break;
                 case 4:
                     deleteUser();
+                    choice = -1;
                     break;
                 case 5: CreateMenu();
                     break;
@@ -298,6 +297,9 @@ public class Main {
     }
     //Display User
     private static void displayUsers(){
+        if (userLists.isEmpty()) {
+            System.out.println("No User found!");
+        }
         for (User user : userLists) {
             System.out.println(
                     " | User ID: " + user.getUserId() +
@@ -307,18 +309,25 @@ public class Main {
     }
     //Update User
     private static void updateUser(){
-        System.out.print("Enter user ID :");
         Scanner input = new Scanner(System.in);
+        boolean isValid = false;
         User user = null;
-        String userId = input.nextLine();
-        for (User eachUser : userLists) {
-            if (eachUser.getUserId().equals(userId)) {
-                user = eachUser;
-                break;
+
+        while(!isValid){
+            System.out.print("Enter User ID to update: ");
+            String userId = input.nextLine();
+            for (User eachUser : userLists) {
+                if (eachUser.getUserId().equalsIgnoreCase(userId)) {
+                    user = eachUser;
+                    isValid = true;
+                    break;
+                }else{
+                    System.out.println("Book not found!");
+                }
             }
         }
-        boolean valid = false;
 
+        boolean valid = false;
         //FirstName
         while (!valid) {
             System.out.print("Enter FirstName: ");
@@ -364,24 +373,30 @@ public class Main {
 
         }
 
-        userLists.add(user);
-        System.out.println("Update User Successful" + " " +user.getUserName());
+        System.out.println("Update User Successfully" + " " +user.getUserName());
     }
 
     //Delete User
     private static void deleteUser(){
-        System.out.print("Enter user ID :");
         Scanner input = new Scanner(System.in);
         User user = null;
-        String userId = input.nextLine();
-        for (User eachUser : userLists) {
-            if (eachUser.getUserId().equals(userId)) {
-                user = eachUser;
-                break;
+        boolean isValid = false;
+
+        while(!isValid){
+            System.out.print("Enter User ID to delete: ");
+            String userId = input.nextLine();
+            for (User eachUser : userLists) {
+                if (eachUser.getUserId().equalsIgnoreCase(userId)) {
+                    user = eachUser;
+                    isValid = true;
+                    break;
+                }else{
+                    System.out.println("User not found!");
+                }
             }
         }
         userLists.remove(user);
-        System.out.println("Delete User Successful");
+        System.out.println("Delete User Successfully");
     }
 
     //Book Management
@@ -676,10 +691,17 @@ public class Main {
     //Show Submenu
     private static void showSubMenu(Role loggedInUserRole) {
         switch (loggedInUserRole) {
-            case ADMIN -> adminMenu(userLists);
-            case STUDENT -> studentMenu(userLists);
-            case TEACHER -> teacherMenu(userLists);
-            case LIBRARIAN -> librarianMenu(userLists);
+            case ADMIN :
+                    adminMenu(userLists);
+                    break;
+            case STUDENT : studentMenu(userLists);
+                    break;
+            case TEACHER :
+                teacherMenu(userLists);
+                break;
+            case LIBRARIAN :
+                librarianMenu(userLists);
+                break;
         }
     }
 
